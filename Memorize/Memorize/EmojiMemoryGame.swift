@@ -5,9 +5,10 @@
 //  Created by Atanas Kolev on 15.10.21.
 //
 
+// ViewModel
 import SwiftUI
 
-class EmojiMemoryGame {
+class EmojiMemoryGame: ObservableObject {
     static let emojis = ["🚗", "🚕", "🚙", "🚌",
                          "🚎", "🏎", "🚓", "🚑",
                          "🚒", "🚐", "🛻", "🚚",
@@ -16,12 +17,18 @@ class EmojiMemoryGame {
                          "🚍", "🚘", "🚖", "✈️"]
     
     static func createMemoryGame() ->MemoryGame<String> {
-        MemoryGame<String>(numberOfPairsOfCards: 4) { pairIndex in emojis[pairIndex] }
+        MemoryGame<String>(numberOfPairsOfCards: 4) { pairIndex in
+            emojis[pairIndex] }
     }
     
-    private var model: MemoryGame<String> = createMemoryGame()
+    @Published private var model: MemoryGame<String> = createMemoryGame()
     
-    var cars: Array<MemoryGame<String>.Card>{
-        return model.cards
+    var cards: Array<MemoryGame<String>.Card>{
+        model.cards
+    }
+    
+    // Mark: - Intent(s)
+    func choose(_ card: MemoryGame<String>.Card) {
+        model.choose(card)
     }
 }
